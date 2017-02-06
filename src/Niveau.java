@@ -5,10 +5,10 @@ public class Niveau {
     int coucheEnCours;
     Ensemble<ComposantGraphique> ensemble;   
     
-    Niveau(String n, int nbCouches, FabriqueEnsembleGenerique f) {
+    Niveau(String n, int nbCouches, FabriqueEnsemble f) {
         System.out.println("Niveau : "+n+", composé de "+nbCouches+" couches");
         coucheEnCours = -1;
-        ensemble = f.nouvelle();
+        ensemble = f.nouveau();
     }
     
     void ajouteComposant(int couche, ComposantGraphique composant) {

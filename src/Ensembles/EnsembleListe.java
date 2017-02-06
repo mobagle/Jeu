@@ -1,51 +1,53 @@
 package Ensembles;
 
-
 import java.util.NoSuchElementException;
 
+class EnsembleListe<T> implements Ensemble<T> {
+    Maillon<T> tete;
 
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-public class EnsembleListe<T> implements Ensemble<T> {
-    
-    T element;
-    EnsembleListe suivant;
-    
+    // Comportement par défaut de java :
     EnsembleListe() {
-        element = null;
-        suivant = null;
+        tete = null;
     }
-
+    
     @Override
-    public void ajoute(T c) {      
-        EnsembleListe e = new EnsembleListe();
-        e.element = this.element;
-        e.suivant = this.suivant;
-        this.element = c;
-        this.suivant = e;
+    public void ajoute(T c) {
+        Maillon<T> nouveau = new Maillon<>(c, tete);
+        tete = nouveau;
     }
 
     @Override
     public void supprime(T c) {
-        EnsembleListe dernier = null;
-        EnsembleListe e = this;
-        while(e.suivant != null && e.element != c) {
-            dernier = e;
-            e  = e.suivant;
+        Maillon<T> prec, courant;
+        
+        prec = null;
+        courant = tete;
+        while ((courant != null) && (courant.element != c)) {
+            prec = courant;
+            courant = courant.suivant;
         }
-        if(e.element == c) {
-            dernier.suivant = e.suivant;
-        }
-        else if(e.suivant == null) {
-            throw new NoSuchElementException();
-        }
+        if (courant != null) {
+            if (prec == null)
+                tete = tete.suivant;
+            else
+                prec.suivant = courant.suivant;
+        } else
+            throw new NoSuchElementException(c + " not found");
     }
-    
-    
+
+    @Override
+    public String toString() {
+        String resultat = "{";
+        Maillon<T> courant = tete;
+        
+        if (courant != null) {
+            resultat += courant.element;
+            courant = courant.suivant;            
+        }
+        while (courant != null) {
+            resultat += ", "+courant.element;
+            courant = courant.suivant;
+        }
+        return resultat+"}";
+    }
 }

@@ -1,5 +1,5 @@
 
-import Ensembles.FabriqueEnsembleGenerique;
+import Ensembles.FabriqueEnsemble;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -14,9 +14,9 @@ class ChargeurNiveaux {
     static String ligne;
     static int indentation;
     static String nom, valeur;
-    static FabriqueEnsembleGenerique fabrique;
+    static FabriqueEnsemble fabrique;
 
-    static void init(FabriqueEnsembleGenerique f) {
+    static void init(FabriqueEnsemble f) {
         if (!initialise) {
             courant = 1;
             initialise = true;
