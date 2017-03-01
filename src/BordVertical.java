@@ -23,19 +23,16 @@
  *          Domaine universitaire
  *          38401 Saint Martin d'Hères
  */
-public class BordVertical implements ComposantGraphique {
+public class BordVertical extends Composant {
+
     float position, direction;
-    
+
     BordVertical(float p, float d) {
         position = p;
         direction = d;
     }
-    
+
     public String toString() {
-        return "Bord Vertical à "+(direction==-1?"gauche":"droite")+" de position "+position;
-    }
-    
-    public ComposantGraphique copieVers(float x, float y) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Bord Vertical à " + (direction == -1 ? "gauche" : "droite") + " de position " + position;
     }
 }

@@ -23,8 +23,9 @@
  *          Domaine universitaire
  *          38401 Saint Martin d'Hères
  */
-public class Bonus implements ComposantGraphique {    
-    public static String [] natures = {
+public class Bonus extends ComposantGraphique {
+
+    public static String[] natures = {
         "Elargit",
         "Retrecit",
         "Multiballes",
@@ -32,14 +33,16 @@ public class Bonus implements ComposantGraphique {
     };
     int nature;
     float x, y;
-    
+
     static int findType(String name) {
-        for (int i=0; i<natures.length; i++)
-            if (name.equals(natures[i]))
+        for (int i = 0; i < natures.length; i++) {
+            if (name.equals(natures[i])) {
                 return i;
+            }
+        }
         return -1;
     }
-    
+
     Bonus(int t, float x, float y) {
         nature = t;
         this.x = x;
@@ -49,12 +52,17 @@ public class Bonus implements ComposantGraphique {
     Bonus(int t) {
         this(t, 0, 0);
     }
-    
+
     public ComposantGraphique copieVers(float x, float y) {
         return new Bonus(nature, x, y);
     }
-    
+
+    @Override
+    public boolean accepte(Visiteur v) {
+        return v.visite(this);
+    }
+
     public String toString() {
-        return "Bonus en ("+x+", "+y+"), nature "+natures[nature];
+        return "Bonus en (" + x + ", " + y + "), nature " + natures[nature];
     }
 }

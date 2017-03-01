@@ -23,6 +23,7 @@
  *          Domaine universitaire
  *          38401 Saint Martin d'Hères
  */
-public interface ComposantGraphique {
-    public ComposantGraphique copieVers(float x, float y);
+abstract class ComposantGraphique extends Composant {
+
+    public abstract ComposantGraphique copieVers(float x, float y);
 }

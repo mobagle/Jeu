@@ -27,59 +27,59 @@ package Ensembles;
 
 import java.util.NoSuchElementException;
 
-class EnsembleTableau<T> implements Ensemble<T> {
+class IterateurEnsembleListe<T> implements Iterateur<T> {
 
-    Object[] contenu;
-    int taille;
+    EnsembleListe<T> e;
+    Maillon<T> pprec, prec, courant;
+    boolean last;
 
-    EnsembleTableau() {
-        this(16);
-    }
-
-    EnsembleTableau(int t) {
-        taille = 0;
-        contenu = new Object[t];
+    IterateurEnsembleListe(EnsembleListe<T> e) {
+        this.e = e;
+        pprec = prec = null;
+        courant = e.tete;
+        last = false;
     }
 
     @Override
-    public void ajoute(T c) {
-        if (taille >= contenu.length) {
-            Object[] nouveau = new Object[contenu.length * 2];
-            System.arraycopy(contenu, 0, nouveau, 0, contenu.length);
-            contenu = nouveau;
+    public boolean aProchain() {
+        return courant != null;
+    }
+
+    @Override
+    public T prochain() {
+        if (aProchain()) {
+            pprec = prec;
+            prec = courant;
+            courant = courant.suivant;
+            last = true;
+            return prec.element;
+        } else {
+            throw new NoSuchElementException();
         }
-        contenu[taille++] = c;
     }
 
     @Override
-    public Iterateur<T> iterateur() {
-        return new IterateurEnsembleTableau<>(this);
-    }
-
-    @Override
-    public void supprime(T c) {
-        for (int i = 0; i < taille; i++) {
-            if (contenu[i] == c) {
-                taille--;
-                contenu[i] = contenu[taille];
-                contenu[taille] = null;
-                return;
+    public void supprime() {
+        if (last) {
+            if (pprec == null) {
+                e.tete = courant;
+            } else {
+                pprec.suivant = courant;
             }
+            prec = pprec;
+            last = false;
+        } else {
+            throw new IllegalStateException();
         }
-        throw new NoSuchElementException(c + " not found");
     }
 
     @Override
-    public String toString() {
-        String resultat = "{";
-        int i = 0;
-
-        if (i < taille) {
-            resultat += contenu[i++];
-        }
-        while (i < taille) {
-            resultat += ", " + contenu[i++];
-        }
-        return resultat + "}";
+    public Iterateur<T> clone() {
+        IterateurEnsembleListe<T> clone = new IterateurEnsembleListe<>(e);
+        clone.pprec = pprec;
+        clone.prec = prec;
+        clone.courant = courant;
+        clone.last = last;
+        return clone;
     }
 }

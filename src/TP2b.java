@@ -26,44 +26,30 @@ import Ensembles.FabriqueEnsemble;
  *          Domaine universitaire
  *          38401 Saint Martin d'Hères
  */
-public class Niveau {
+public class TP2b {
 
-    FabriqueEnsemble f;
-    Couche[] couches;
-
-    Niveau(String n, int nb) {
-        System.out.println("Niveau : " + n + ", composé de " + nb + " couches");
-        couches = new Couche[nb];
-        f = FabriqueEnsemble.grand();
-        for (int i = 0; i < couches.length; i++) {
-            couches[i] = new Couche(f);
+    public static void main(String[] args) {
+        FabriqueEnsemble.init(Configuration.proprietes());
+        ChargeurNiveaux.init();
+        Niveau n = ChargeurNiveaux.prochainNiveau();
+        while (n != null) {
+            n.accepte(new VisiteurAffichage());
+            VisiteurDecompte v = new VisiteurDecompte();
+            n.accepte(v);
+            System.out.println("Nombre de composants : " + v.decompte());
+            System.out.println("Je supprime tous les bonus");
+            // Un exemple avec une classe abstraite, qui se prête bien à ce
+            // genre d'opération
+            n.accepte(new Visiteur() {
+                @Override
+                public boolean visite(Bonus b) {
+                    return true;
+                }
+            });
+            v.reinitialise();
+            n.accepte(v);
+            System.out.println("Nombre de composants : " + v.decompte());
+            n = ChargeurNiveaux.prochainNiveau();
         }
-    }
-
-    void ajouteComposant(int h, Composant c) {
-        couches[h].ajoute(c);
-    }
-
-    void fixerDimensionsMax(int i, int j) {
-        System.out.println("Le niveau a une largeur de " + i + " et une hauteur de " + j);
-    }
-
-    void fixeCouleurs(String[] t, int nb) {
-        System.out.println("Les couleurs utilisées dans ce niveau sont :");
-        for (int i = 0; i < nb; i++) {
-            System.out.println(i + " - " + t[i]);
-        }
-    }
-
-    boolean accepte(Visiteur v) {
-        boolean retour = false;
-        for (int i = 0; i < couches.length; i++) {
-            retour = retour || couches[i].accepte(v);
-        }
-        return retour;
-    }
-
-    void nouvelleBalle() {
-        System.out.println("Prêt à jouer, en attente de balle !");
     }
 }

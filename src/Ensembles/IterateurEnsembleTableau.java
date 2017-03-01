@@ -26,39 +26,53 @@
 package Ensembles;
 
 import java.util.NoSuchElementException;
-import java.util.Properties;
 
-abstract public class FabriqueEnsemble {
+class IterateurEnsembleTableau<T> implements Iterateur<T> {
 
-    static FabriqueEnsemble grand;
-    static FabriqueEnsemble petit;
+    EnsembleTableau<T> e;
+    int position;
+    int last;
 
-    static FabriqueEnsemble creerFabriqueEnsemble(String type) {
-        switch (type) {
-            case "Tableau":
-                return new FabriqueEnsembleTableau();
-            case "Liste":
-                return new FabriqueEnsembleListe();
-            default:
-                throw new NoSuchElementException("Ensemble de type " + type);
+    IterateurEnsembleTableau(EnsembleTableau<T> e) {
+        this.e = e;
+        position = 0;
+        last = -1;
+    }
+
+    @Override
+    public boolean aProchain() {
+        return position < e.taille;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public T prochain() {
+        if (aProchain()) {
+            last = position;
+            return (T) e.contenu[position++];
+        } else {
+            throw new NoSuchElementException();
         }
     }
 
-    public static void init(Properties p) {
-        grand = creerFabriqueEnsemble(p.getProperty("GrandEnsemble"));
-        petit = creerFabriqueEnsemble(p.getProperty("PetitEnsemble"));
-        System.err.println("Grand ensemble : " + grand + ", Petit Ensemble : " + petit);
+    @Override
+    public void supprime() {
+        if (last != -1) {
+            e.taille--;
+            e.contenu[last] = e.contenu[e.taille];
+            e.contenu[e.taille] = null;
+            last = -1;
+            position--;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
-    public static FabriqueEnsemble grand() {
-        return grand;
-        //return new FabriqueEnsembleTableau();
+    @Override
+    public Iterateur<T> clone() {
+        IterateurEnsembleTableau<T> clone = new IterateurEnsembleTableau<>(e);
+        clone.position = position;
+        clone.last = last;
+        return clone;
     }
-
-    public static FabriqueEnsemble petit() {
-        return petit;
-        //return new FabriqueEnsembleListe();
-    }
-
-    public abstract <T> Ensemble<T> nouveau();
 }
