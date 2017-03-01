@@ -1,3 +1,5 @@
+package Modele;
+
 /*
  * Armoroides - casse briques à but pédagogique
  * Copyright (C) 2016 Guillaume Huard

@@ -1,4 +1,4 @@
-package Ensembles;
+package Modele.Ensembles;
 
 class Maillon<T> {
     T element;

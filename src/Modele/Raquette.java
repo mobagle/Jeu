@@ -23,46 +23,36 @@
  *          Domaine universitaire
  *          38401 Saint Martin d'Hères
  */
-public class Bonus extends ComposantGraphique {
+package Modele;
 
-    public static String[] natures = {
-        "Elargit",
-        "Retrecit",
-        "Multiballes",
-        "Laser"
-    };
-    int nature;
-    float x, y;
-
-    static int findType(String name) {
-        for (int i = 0; i < natures.length; i++) {
-            if (name.equals(natures[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    Bonus(int t, float x, float y) {
-        nature = t;
-        this.x = x;
-        this.y = y;
-    }
-
-    Bonus(int t) {
-        this(t, 0, 0);
-    }
-
-    public ComposantGraphique copieVers(float x, float y) {
-        return new Bonus(nature, x, y);
+public class Raquette extends ComposantGraphique {
+    float largeur, hauteur;
+    static final float LARGEUR_DEFAUT = 4;
+    static final float HAUTEUR_DEFAUT = 0.5f;
+    
+    Raquette(float x, float y) {
+        super(x, y);
+        largeur = LARGEUR_DEFAUT;
+        hauteur = HAUTEUR_DEFAUT;
     }
 
     @Override
-    public boolean accepte(Visiteur v) {
+    public float l() {
+        return largeur;
+    }
+
+    @Override
+    public float h() {
+        return hauteur;
+    }
+
+    @Override
+    boolean accepte(Visiteur v) {
         return v.visite(this);
     }
 
-    public String toString() {
-        return "Bonus en (" + x + ", " + y + "), nature " + natures[nature];
+    @Override
+    ComposantGraphique copieVers(float x, float y) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

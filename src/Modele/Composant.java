@@ -1,3 +1,5 @@
+package Modele;
+
 /*
  * Armoroides - casse briques à but pédagogique
  * Copyright (C) 2016 Guillaume Huard
@@ -23,7 +25,12 @@
  *          Domaine universitaire
  *          38401 Saint Martin d'Hères
  */
-abstract class ComposantGraphique extends Composant {
+abstract class Composant {
+    // Un composant peut accepter un visiteur destiné à
+    // effectuer un traitement sur lui. La valeur de retour
+    // détermine si le composant doit être supprimé
 
-    public abstract ComposantGraphique copieVers(float x, float y);
+    boolean accepte(Visiteur v) {
+        return v.visite(this);
+    }
 }

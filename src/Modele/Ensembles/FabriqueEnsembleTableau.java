@@ -1,4 +1,4 @@
-package Ensembles;
+package Modele.Ensembles;
 
 class FabriqueEnsembleTableau extends FabriqueEnsemble {
     @Override

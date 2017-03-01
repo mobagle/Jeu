@@ -1,3 +1,5 @@
+package Modele;
+
 /*
  * Armoroides - casse briques à but pédagogique
  * Copyright (C) 2016 Guillaume Huard
@@ -23,26 +25,32 @@
  *          Domaine universitaire
  *          38401 Saint Martin d'Hères
  */
+import Modele.Ensembles.FabriqueEnsemble;
+import Modele.Ensembles.Iterateur;
+import Modele.Ensembles.Ensemble;
 
-class VisiteurDecompte extends Visiteur {
+class Couche {
 
-    int decompte;
+    Ensemble<Composant> objets;
 
-    VisiteurDecompte() {
-        decompte = 0;
+    Couche(FabriqueEnsemble f) {
+        objets = f.nouveau();
     }
 
-    @Override
-    public boolean visite(Composant c) {
-        decompte++;
-        return false;
+    void ajoute(Composant c) {
+        objets.ajoute(c);
     }
 
-    int decompte() {
-        return decompte;
-    }
-
-    void reinitialise() {
-        decompte = 0;
+    boolean accepte(Visiteur v) {
+        boolean deleted = false;
+        Iterateur<Composant> it = objets.iterateur();
+        while (it.aProchain()) {
+            Composant c = it.prochain();
+            if (c.accepte(v)) {
+                it.supprime();
+                deleted = true;
+            }
+        }
+        return deleted;
     }
 }

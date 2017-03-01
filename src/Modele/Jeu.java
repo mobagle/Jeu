@@ -23,13 +23,21 @@
  *          Domaine universitaire
  *          38401 Saint Martin d'Hères
  */
-package Ensembles;
+package Modele;
 
-public interface Ensemble<T> {
+public class Jeu {
+    Niveau n;
 
-    void ajoute(T c);
-
-    void supprime(T c);
-
-    Iterateur<T> iterateur();
+    public void init() {
+        ChargeurNiveaux.init();
+        n = ChargeurNiveaux.prochainNiveau();
+    }
+    
+    public boolean accepte(Visiteur d) {
+        if (n != null) {
+            n.accepte(d);
+            return false;
+        } else
+            return true;
+    }
 }

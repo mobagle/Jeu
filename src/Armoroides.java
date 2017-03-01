@@ -1,22 +1,22 @@
 /*
  * Armoroides - casse briques à but pédagogique
  * Copyright (C) 2016 Guillaume Huard
- * 
+
  * Ce programme est libre, vous pouvez le redistribuer et/ou le
  * modifier selon les termes de la Licence Publique Générale GNU publiée par la
  * Free Software Foundation (version 2 ou bien toute autre version ultérieure
  * choisie par vous).
- * 
+
  * Ce programme est distribué car potentiellement utile, mais SANS
  * AUCUNE GARANTIE, ni explicite ni implicite, y compris les garanties de
  * commercialisation ou d'adaptation dans un but spécifique. Reportez-vous à la
  * Licence Publique Générale GNU pour plus de détails.
- * 
+
  * Vous devez avoir reçu une copie de la Licence Publique Générale
  * GNU en même temps que ce programme ; si ce n'est pas le cas, écrivez à la Free
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
  * États-Unis.
- * 
+
  * Contact: Guillaume.Huard@imag.fr
  *          Laboratoire LIG
  *          700 avenue centrale
@@ -24,41 +24,20 @@
  *          38401 Saint Martin d'Hères
  */
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import Modele.Configuration;
+import Modele.Ensembles.FabriqueEnsemble;
+import Modele.Jeu;
+import Vue.InterfaceCanvasJavaFX;
 import java.util.Properties;
 
-public class Configuration {
-	static void erreur(Exception e, String nom) {
-			System.err.println("Impossible de charger " + nom);
-			System.err.println(e);
-			System.exit(1);		
-	}
-	
-	static void chargerProprietes(Properties p, InputStream in) {		
-		try {
-			p.load(in);
-		} catch (IOException e) {
-			erreur(e, "defaut.cfg");
-		}
-	}
-	
-	static Properties proprietes() {
-		Properties p;
-		InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("defaut.cfg");
-		Properties defaut = new Properties();
-		chargerProprietes(defaut, in);
-		String nom = System.getProperty("user.home")+"/.armoroides";
-		try {
-			in = new FileInputStream(nom);
-			p = new Properties(defaut);
-			chargerProprietes(p, in);
-		} catch (FileNotFoundException e) {
-			p = defaut;
-		}
-		return p;
-	}
-	
+public class Armoroides {
+
+    public static void main(String[] args) {
+        Jeu j;
+        Properties p = Configuration.proprietes();
+        FabriqueEnsemble.init(p);
+        j = new Jeu();
+        System.err.println("Type de jeu : "+j);
+        InterfaceCanvasJavaFX.creer(args, j);
+    }
 }

@@ -24,9 +24,10 @@
  *          38401 Saint Martin d'Hères
  */
 
-import Ensembles.Ensemble;
-import Ensembles.FabriqueEnsemble;
-import Ensembles.Iterateur;
+import Modele.Configuration;
+import Modele.Ensembles.Ensemble;
+import Modele.Ensembles.FabriqueEnsemble;
+import Modele.Ensembles.Iterateur;
 import java.util.Random;
 
 public class TP2a {
